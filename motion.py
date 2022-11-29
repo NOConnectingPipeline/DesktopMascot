@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-from PIL import Image, ImageTk, ImageOps  # 画像データ用
+from PIL import Image, ImageTk, ImageOps
 import monitor_size as mns
 
 import cv2
