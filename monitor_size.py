@@ -1,4 +1,4 @@
-import pyautogui as pg # 別途インストールが必要な場合あり
+import pyautogui as pg
 
 def getWidth() :
     scr_w = pg.size().width
