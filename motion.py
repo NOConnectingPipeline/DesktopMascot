@@ -1,0 +1,91 @@
+#cd デスクトップ/program-warehouse/python-lesson/movie
+#python movie.py
+import tkinter as tk
+from tkinter import filedialog
+from PIL import Image, ImageTk, ImageOps  # 画像データ用
+import monitor_size as mns
+#from .drag import Drag
+
+import cv2
+
+class Motion(tk.Frame):
+    def __init__(self, filepath = '', master = None):
+        super().__init__(master)
+        self.pack()
+        
+        def onKeyPressed(event) :
+            if event.keycode == 27 :
+                self.master.destroy()
+
+        width = str(mns.getWidth())
+        height = str(mns.getHeight())
+        
+        self.master.overrideredirect(True)
+        self.master.geometry(width + 'x' + height)
+        self.master.attributes("-topmost", True)
+        self.master.bind('<Key>', onKeyPressed)
+        
+        # Canvasの作成
+        self.canvas = tk.Canvas(self.master, bg="#003300", width=width, height=height)
+        # Canvasにマウスイベント（左ボタンクリック）の追加
+        #self.canvas.bind('<Button-1>', self.canvas_click)
+        # Canvasを配置
+        self.canvas.place(x = 0, y = 0)
+        
+        # 背景色の制定
+        self.master.attributes('-transparentcolor', self.canvas['bg'])
+
+        # 動画ファイルを読み込む
+        self.capture = cv2.VideoCapture(filepath)
+
+        self.disp_id = None
+        
+        if self.disp_id is None:
+            # 動画を表示
+            self.disp_image()
+        else:
+            # 動画を停止
+            self.after_cancel(self.disp_id)
+            self.disp_id = None
+
+    def canvas_click(self, event):
+        '''Canvasのマウスクリックイベント'''
+
+        if self.disp_id is None:
+            # 動画を表示
+            self.disp_image()
+        else:
+            # 動画を停止
+            self.after_cancel(self.disp_id)
+            self.disp_id = None
+
+    def disp_image(self):
+        '''画像をCanvasに表示する'''
+
+        # フレーム画像の取得
+        ret, frame = self.capture.read()
+    
+        # BGR→RGB変換
+        cv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # NumPyのndarrayからPillowのImageへ変換
+        pil_image = Image.fromarray(cv_image)
+
+        # キャンバスのサイズを取得
+        canvas_width = self.canvas.winfo_width()
+        canvas_height = self.canvas.winfo_height()
+
+        # 画像のアスペクト比（縦横比）を崩さずに指定したサイズ（キャンバスのサイズ）全体に画像をリサイズする
+        pil_image = ImageOps.pad(pil_image, (300, 300))
+
+        # PIL.ImageからPhotoImageへ変換する
+        self.photo_image = ImageTk.PhotoImage(image=pil_image)
+
+        # 画像の描画
+        self.canvas.create_image(
+                canvas_width / 2,       # 画像表示位置(Canvasの中心)
+                canvas_height / 2,                   
+                image=self.photo_image  # 表示画像データ
+                )
+
+        # disp_image()を10msec後に実行する
+        self.disp_id = self.after(10, self.disp_image)
