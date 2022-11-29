@@ -1,10 +1,7 @@
-#cd デスクトップ/program-warehouse/python-lesson/movie
-#python movie.py
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk, ImageOps  # 画像データ用
 import monitor_size as mns
-#from .drag import Drag
 
 import cv2
 
