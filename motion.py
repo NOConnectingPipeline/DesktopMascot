@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import Image, ImageTk, ImageOps
 import monitor_size as mns
+from drag import Drag
 
 import cv2
 
@@ -14,20 +15,24 @@ class Motion(tk.Frame):
             if event.keycode == 27 :
                 self.master.destroy()
 
-        width = str(mns.getWidth())
-        height = str(mns.getHeight())
+        width = mns.getWidth()
+        height = mns.getHeight()
         
         self.master.overrideredirect(True)
-        self.master.geometry(width + 'x' + height)
+        self.master.geometry(str(width) + 'x' + str(height))
         self.master.attributes("-topmost", True)
         self.master.bind('<Key>', onKeyPressed)
         
         # Canvasの作成
-        self.canvas = tk.Canvas(self.master, bg="#003300", width=width, height=height)
-        # Canvasにマウスイベント（左ボタンクリック）の追加
-        #self.canvas.bind('<Button-1>', self.canvas_click)
+        self.canvas = tk.Canvas(self.master, bg="#003300", width=str(width * 3), height=(height * 3))
         # Canvasを配置
-        self.canvas.place(x = 0, y = 0)
+        self.canvas.place(x = -width, y = -height)
+        
+        #Canvasのドラッグ設定
+        drag = Drag(False, (0, 0), self.master)
+        self.canvas.bind("<Button>", drag.mouseDown)
+        self.canvas.bind("<ButtonRelease>", drag.mouseRelease)
+        self.canvas.bind("<Motion>", drag.mouseMove)
         
         # 背景色の制定
         self.master.attributes('-transparentcolor', self.canvas['bg'])
