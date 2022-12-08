@@ -3,7 +3,6 @@ from tkinter import filedialog
 from PIL import Image, ImageTk, ImageOps
 import monitor_size as mns
 from drag import Drag
-
 import cv2
 
 class Motion(tk.Frame):
@@ -14,14 +13,15 @@ class Motion(tk.Frame):
         def onKeyPressed(event) :
             if event.keycode == 27 :
                 self.master.destroy()
-
+                    
         width = mns.getWidth()
         height = mns.getHeight()
         
         self.master.overrideredirect(True)
         self.master.geometry(str(width) + 'x' + str(height))
         self.master.attributes("-topmost", True)
-        self.master.bind('<Key>', onKeyPressed)
+        
+        self.master.bind("<Key>", onKeyPressed)
         
         # Canvasの作成
         self.canvas = tk.Canvas(self.master, bg="#003300", width=str(width * 3), height=(height * 3))
