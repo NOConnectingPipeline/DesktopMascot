@@ -1,0 +1,18 @@
+{
+    "animation": [
+        {
+            "keycode": "a",
+            "path": "./animations/kadai04.webm"
+        }
+        ,
+        {
+            "keycode": "b",
+            "path": "./animations/kadai05.webm"
+        }
+        ,
+        {
+            "keycode": "c",
+            "path": "./animations/kadai08.webm"
+        }
+    ]
+}
