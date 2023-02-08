@@ -1,18 +1,13 @@
 {
     "animation": [
         {
-            "keycode": "a",
-            "path": "./animations/kadai04.webm"
+            "keycode": 90,
+            "path": "./animations/sans.gif"
         }
         ,
         {
-            "keycode": "b",
-            "path": "./animations/kadai05.webm"
-        }
-        ,
-        {
-            "keycode": "c",
-            "path": "./animations/kadai08.webm"
+            "keycode": 88,
+            "path": "./animations/sans2.gif"
         }
     ]
 }
